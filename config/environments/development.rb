@@ -58,6 +58,8 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+  config.log_level = :debug  # This is typically 'debug' in development
+  config.logger = Logger.new(Rails.root.join("log", "development.log"))
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
