@@ -1,0 +1,11 @@
+<h1>String Calculator</h1>
+
+<%= form_tag(calculator_path, method: :get) do %>
+  <%= label_tag :numbers, "Enter numbers (comma or newline separated):" %><br>
+  <%= text_area_tag :numbers, nil, rows: 4, cols: 50 %><br>
+  <%= submit_tag "Calculate" %>
+<% end %>
+
+<% if @result != nil %>
+  <h2>Result: <%= @result %></h2>
+<% end %>
