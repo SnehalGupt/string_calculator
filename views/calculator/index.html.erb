@@ -1,11 +1,19 @@
 <h1>String Calculator</h1>
 
-<%= form_tag(calculator_path, method: :get) do %>
-  <%= label_tag :numbers, "Enter numbers (comma or newline separated):" %><br>
-  <%= text_area_tag :numbers, nil, rows: 4, cols: 50 %><br>
+<%= form_with url: calculator_path, method: :get, local: true do %>
+  <label for="numbers">Enter numbers (comma and \n allowed):</label><br>
+  <%= text_area_tag :numbers, params[:numbers], rows: 4, cols: 30, placeholder: "Example: 1\\n2,3" %><br><br>
   <%= submit_tag "Calculate" %>
 <% end %>
 
-<% if @result != nil %>
-  <h2>Result: <%= @result %></h2>
+<% if @error.present? %>
+  <div style="color: red;">
+    <strong>Error:</strong> <%= @error %>
+  </div>
+<% elsif @result.present? %>
+  <hr>
+  <h3>Output</h3>
+  <p><strong>Input:</strong></p>
+  <pre><%= @input %></pre>
+  <p><strong>Sum:</strong> <%= @result %></p>
 <% end %>
