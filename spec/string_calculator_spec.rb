@@ -128,6 +128,11 @@ RSpec.describe StringCalculator::Calculator do
       calculator = StringCalculator::Calculator.new
       expect(calculator.add("//[***]\n1***2***3")).to eq(6)
     end
+    it 'handles multiple custom delimiters of any length' do
+      calculator = StringCalculator::Calculator.new
+      expect(calculator.add("//[**][%%]\n1**2%%3")).to eq(6)
+      expect(calculator.add("//[&&&][###]\n4&&&5###6")).to eq(15)
+    end
   end
 end
 
