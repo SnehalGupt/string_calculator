@@ -110,8 +110,7 @@ RSpec.describe StringCalculator::Calculator do
       expect(given_input).to eq("1,2")    # Input should be "1,2"
       expect(result).to eq(3)              # The result should be 3
     end
-
-    
+   
 
     it 'raises an error when negative numbers are passed' do
       # Expecting an error if the input contains negative numbers
@@ -123,6 +122,11 @@ RSpec.describe StringCalculator::Calculator do
       calculator = StringCalculator::Calculator.new
       expect(calculator.add("2,1001")).to eq(2)
       expect(calculator.add("1000,2")).to eq(1002)  # 1000 is allowed
+    end
+
+    it 'handles custom delimiters of any length' do
+      calculator = StringCalculator::Calculator.new
+      expect(calculator.add("//[***]\n1***2***3")).to eq(6)
     end
   end
 end

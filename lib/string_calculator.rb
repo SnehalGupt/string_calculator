@@ -47,32 +47,37 @@ module StringCalculator
     end
 
     def add(numbers)
-  self.class.increment_called_count
+      self.class.increment_called_count
+      return 0 if numbers.strip.empty?
 
-  return 0 if numbers.strip.empty?
+      delimiters = [",", "\n"]
 
-  delimiters = [",", "\n"]
+      if numbers.start_with?("//")
+        header, numbers = numbers.split("\n", 2)
 
-  if numbers.start_with?("//")
-    header, numbers = numbers.split("\n", 2)
-    custom_delimiter = header[2..]
-    delimiters << custom_delimiter
-  end
+        # Handle multiple character delimiters: //[***]
+        if header.match?(/\[.+\]/)
+          # Extract all [delimiters], supports even multiple delimiters if needed later
+          delimiters += header.scan(/\[([^\]]+)\]/).flatten
+        else
+          delimiters << header[2]  # Simple one-char delimiter
+        end
+      end
 
-  pattern = Regexp.union(delimiters)
-  number_list = numbers.split(pattern).map(&:to_i)
+      pattern = Regexp.union(delimiters)
+      number_list = numbers.split(pattern).map(&:to_i)
 
-  negatives = number_list.select { |n| n < 0 }
-  raise ArgumentError, "negatives not allowed: #{negatives.join(', ')}" if negatives.any?
+      negatives = number_list.select { |n| n < 0 }
+      raise ArgumentError, "negatives not allowed: #{negatives.join(', ')}" if negatives.any?
 
-  # ✅ Ignore numbers > 1000
-  filtered = number_list.reject { |n| n > 1000 }
+      filtered = number_list.reject { |n| n > 1000 }
 
-  result = filtered.sum
+      result = filtered.sum
 
-  self.class.add_occured.call(numbers, result) if self.class.add_occured
+      self.class.add_occured.call(numbers, result) if self.class.add_occured
 
-  result
-end
+      result
+    end
+  ## class end 
   end
 end
