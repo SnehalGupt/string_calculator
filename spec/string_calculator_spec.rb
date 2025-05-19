@@ -54,6 +54,28 @@ RSpec.describe StringCalculator::Calculator do
         StringCalculator::Calculator.new.add("//;\n-1;2;-3")
       }.to raise_error(ArgumentError, "negatives not allowed: -1, -3")
     end
+    # exception to show negaitve nos 
+    it 'raises an error for negative numbers' do
+      expect {
+        StringCalculator::Calculator.new.add("1,-2,3,-4")
+      }.to raise_error(ArgumentError, "negatives not allowed: -2, -4")
+    end
+
+    it 'raises error with custom delimiter and multiple negatives' do
+      expect {
+        StringCalculator::Calculator.new.add("//;\n-1;2;-3;4;-5")
+      }.to raise_error(ArgumentError, "negatives not allowed: -1, -3, -5")
+    end 
+    it 'tracks the number of times Add() is called' do
+      calculator = StringCalculator::Calculator.new
+      expect(calculator.get_called_count).to eq(0) # Initially, it should be 0
+
+      calculator.add("1,2")
+      expect(calculator.get_called_count).to eq(1) # After calling Add once, count should be 1
+
+      calculator.add("3,4")
+      expect(calculator.get_called_count).to eq(2) # After calling Add twice, count should be 2
+    end
   end
 end
 
