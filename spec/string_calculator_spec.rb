@@ -76,6 +76,42 @@ RSpec.describe StringCalculator::Calculator do
       calculator.add("3,4")
       expect(calculator.get_called_count).to eq(2) # After calling Add twice, count should be 2
     end
+
+    it 'triggers the AddOccured event after each Add() call' do
+      # Listen for the event
+      given_input = nil
+      result = nil
+
+      # Set up the event listener for AddOccured
+      StringCalculator::Calculator.add_occured = lambda { |input, res|
+        given_input = input
+        result = res
+      }
+
+      # Call the add method
+      StringCalculator::Calculator.new.add("1,2")
+
+      # Check if the event was triggered
+      expect(given_input).to eq("1,2")    # Input should be "1,2"
+      expect(result).to eq(3)              # The result should be 3
+    end
+
+    it 'returns the correct count for the number of Add() calls' do
+      # Test the get_called_count method
+      expect(StringCalculator::Calculator.get_called_count).to eq(0) # Initially, count is 0
+
+      # Call the add method
+      StringCalculator::Calculator.new.add("1,2")
+      expect(StringCalculator::Calculator.get_called_count).to eq(1) # After one call, count should be 1
+
+      StringCalculator::Calculator.new.add("3,4")
+      expect(StringCalculator::Calculator.get_called_count).to eq(2) # After two calls, count should be 2
+    end
+
+    it 'raises an error when negative numbers are passed' do
+      # Expecting an error if the input contains negative numbers
+      expect { StringCalculator::Calculator.new.add("1,-2,3") }.to raise_error(ArgumentError, "negatives not allowed: -2")
+    end
   end
 end
 
