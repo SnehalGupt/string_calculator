@@ -25,6 +25,19 @@ RSpec.describe StringCalculator::Calculator do
      it 'returns 6 for input "1\\n2,3"' do
       expect(StringCalculator::Calculator.new.add("1\n2,3\n8")).to eq(14)
     end
+
+    # further tescases to handle other delimiters as well 
+     it 'supports custom delimiter ;' do
+      expect(StringCalculator.new.add("//;\n1;2")).to eq(3)
+    end
+
+    it 'supports custom delimiter #' do
+      expect(StringCalculator.new.add("//#\n4#5#6")).to eq(15)
+    end
+
+    it 'supports custom delimiter @ with newline' do
+      expect(StringCalculator.new.add("//@\n7@8\n9")).to eq(24)
+    end
   end
 end
 
