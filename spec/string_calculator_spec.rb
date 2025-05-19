@@ -38,6 +38,22 @@ RSpec.describe StringCalculator::Calculator do
     it 'supports custom delimiter @ with newline' do
       expect(StringCalculator::Calculator.new.add("//@\n7@8\n9")).to eq(24)
     end
+
+    it 'raises an error for negative numbers' do
+      expect {
+        StringCalculator::Calculator.new.add("1,-2,3,-4")
+      }.to raise_error(ArgumentError, "negatives not allowed: -2, -4")
+    end
+
+    it 'still works for only positive numbers' do
+      expect(StringCalculator::Calculator.new.add("1,2,3")).to eq(6)
+    end
+
+    it 'raises error with custom delimiter and negatives' do
+      expect {
+        StringCalculator::Calculator.new.add("//;\n-1;2;-3")
+      }.to raise_error(ArgumentError, "negatives not allowed: -1, -3")
+    end
   end
 end
 
