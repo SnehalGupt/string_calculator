@@ -3,6 +3,21 @@ require 'string_calculator'
 
 RSpec.describe StringCalculator::Calculator do
   describe '#add' do
+
+    before(:each) do
+      StringCalculator::Calculator.instance_variable_set(:@called_count, 0)
+    end
+
+    it 'tracks the number of times Add() is called' do
+      expect(StringCalculator::Calculator.get_called_count).to eq(0)
+
+      calculator = StringCalculator::Calculator.new
+      calculator.add("1,2")
+      expect(StringCalculator::Calculator.get_called_count).to eq(1)
+
+      calculator.add("3,4")
+      expect(StringCalculator::Calculator.get_called_count).to eq(2)
+    end
     it 'returns 0 for an empty string' do
       expect(StringCalculator::Calculator.new.add("")).to eq(0)
     end
@@ -96,17 +111,7 @@ RSpec.describe StringCalculator::Calculator do
       expect(result).to eq(3)              # The result should be 3
     end
 
-    it 'returns the correct count for the number of Add() calls' do
-      # Test the get_called_count method
-      expect(StringCalculator::Calculator.get_called_count).to eq(0) # Initially, count is 0
-
-      # Call the add method
-      StringCalculator::Calculator.new.add("1,2")
-      expect(StringCalculator::Calculator.get_called_count).to eq(1) # After one call, count should be 1
-
-      StringCalculator::Calculator.new.add("3,4")
-      expect(StringCalculator::Calculator.get_called_count).to eq(2) # After two calls, count should be 2
-    end
+    
 
     it 'raises an error when negative numbers are passed' do
       # Expecting an error if the input contains negative numbers
